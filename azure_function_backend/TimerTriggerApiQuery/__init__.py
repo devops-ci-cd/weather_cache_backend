@@ -9,10 +9,10 @@ from time import sleep
 from dateutil.relativedelta import relativedelta
 from os import getenv
 
-db_server = getenv('DB_SERVER') or 'devops-db-server.database.windows.net'
-db_user = getenv('DB_USER') or 'devops'
-db_password = getenv('DB_PASSWORD') or 'ljksadfhjuyerGFd65'
-db = getenv('DATABASE') or 'weatherdb'
+db_server = "polyarush-db-server-9cd42512-6dbf-a0cd-f92d-0faa1fc25d03"
+db_user = "4dm1n157r470r"
+db_password = "4-v3ry-adsfasdfasdf-p455wasdfasdfadsasdf0rd"
+db = "polyarush-db-9cd42512-6dbf-a0cd-f92d-0faa1fc25d03"
 
 def build_values_line(response):
     min_temp, max_temp, humidity = [], [], []
