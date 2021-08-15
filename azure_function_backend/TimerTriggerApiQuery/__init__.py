@@ -9,8 +9,8 @@ from time import sleep
 from dateutil.relativedelta import relativedelta
 from os import getenv
 
-db_server = "polyarush-db-server-9cd42512-6dbf-a0cd-f92d-0faa1fc25d03"
-db_user = "4dm1n157r470r"
+db_server = "polyarush-db-server-9cd42512-6dbf-a0cd-f92d-0faa1fc25d03.database.windows.net"
+db_user = "KJHDggdfjgweurtygf"
 db_password = "4-v3ry-adsfasdfasdf-p455wasdfasdfadsasdf0rd"
 db = "polyarush-db-9cd42512-6dbf-a0cd-f92d-0faa1fc25d03"
 
@@ -40,7 +40,7 @@ def main(mytimer: func.TimerRequest) -> None:
     resp_yesterday_year_ago = requests.get(f"https://www.metaweather.com/api/location/{woeid}/{day_yesterday_year_ago}/")
 
     # try to connect to the paused SQL server
-    while not ('conn' in globals()):
+    while not ('conn' in locals()):
         try:
             conn = pymssql.connect(server=db_server, user=db_user, password=db_password, database=db)
         except pymssql.StandardError as e:
@@ -57,6 +57,7 @@ def main(mytimer: func.TimerRequest) -> None:
             ]
         )
         conn.commit()
+
     except pymssql.StandardError as e:
         logging.error(e.args)
     conn.close()
