@@ -147,3 +147,5 @@ Dockerfile
 azure_infrastructure/terraform/terraform.tfvars
 azure_function_backend/__azurite_db_queue_extent__.json
 azure_function_backend/__azurite_db_queue__.json
+.gitignore
+azure_function_backend/ServiceBusQueueTrigger1/sample.dat
