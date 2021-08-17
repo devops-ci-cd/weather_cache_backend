@@ -9,10 +9,10 @@ from time import sleep
 from dateutil.relativedelta import relativedelta
 from os import getenv
 
-db_server = "getenv"
-db_user = "getenv"
-db_password = "getenv"
-db = "getenv"
+db_server = getenv('azure_db_server_name')
+db_user = getenv('DB_USER')
+db_password = getenv('db-administrator')
+db = getenv('azure_db_name')
 
 def build_values_line(response):
     min_temp, max_temp, humidity = [], [], []
