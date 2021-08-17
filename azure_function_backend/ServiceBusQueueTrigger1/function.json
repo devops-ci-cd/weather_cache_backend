@@ -1,0 +1,12 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "msg",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "queueName": "polyarush-queue-9bf130f8-97f9-89f9-2885-e464d8d65f85",
+      "connection": "polyarushsb9bf130f897f989f92885e464d8d65f85_SERVICEBUS"
+    }
+  ]
+}

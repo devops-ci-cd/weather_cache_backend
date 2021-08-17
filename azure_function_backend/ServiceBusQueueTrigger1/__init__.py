@@ -1,5 +1,5 @@
-
 import logging
+
 import azure.functions as func
 
 import datetime
@@ -11,10 +11,12 @@ from time import sleep
 from dateutil.relativedelta import relativedelta
 from os import getenv
 
+
 db_server = getenv('azure_db_server_name')
 db_user = getenv('DB_USER')
-db_password = getenv('db-administrator')
+db_password = getenv('password')
 db = getenv('azure_db_name')
+
 
 def build_values_line(response):
     min_temp, max_temp, humidity = [], [], []
@@ -24,18 +26,17 @@ def build_values_line(response):
         humidity.append(item['humidity'])
     return (response.json()[0]['applicable_date'], round(mean(max_temp)), round(mean(min_temp)), round(mean(humidity)))
 
-def main(mytimer: func.TimerRequest) -> None:
-    utc_timestamp = datetime.datetime.utcnow().replace(
-        tzinfo=datetime.timezone.utc).isoformat()
 
-        # server='devops-db-server.database.windows.net', user='devops', password='ljksadfhjuyerGFd65', database='weatherdb'
+def main(msg: func.ServiceBusMessage):
+    # server='devops-db-server.database.windows.net', user='devops', password='ljksadfhjuyerGFd65', database='weatherdb'
     # St. Petersburg woeid by default
     woeid = 2123260
     # city = 'St Petersburg'
     # fetch "today" for the woeid timezone
     # relativedelta to deal with leap years
-    day_yesterday = (date.today() - relativedelta(days=1)).strftime("%Y/%m/%d")
-    day_yesterday_year_ago = (date.today() - relativedelta(days=1) - relativedelta(years=1)).strftime("%Y/%m/%d")
+    req_day = datetime.datetime.strptime(msg.get_body().decode('utf-8'), '%d%m%Y').date()
+    day_yesterday = (req_day - relativedelta(days=1)).strftime("%Y/%m/%d")
+    day_yesterday_year_ago = (req_day - relativedelta(days=1) - relativedelta(years=1)).strftime("%Y/%m/%d")
 
     # https://www.metaweather.com/api/location/<woeid>/<year>/<month>/<day>/
     resp_yesterday = requests.get(f"https://www.metaweather.com/api/location/{woeid}/{day_yesterday}/")
@@ -64,9 +65,6 @@ def main(mytimer: func.TimerRequest) -> None:
         logging.error(e.args)
     conn.close()
 
-    if mytimer.past_due:
-        logging.info('The timer is past due!')
 
-    logging.info('Python timer trigger function ran at %s', utc_timestamp)
-
-
+    logging.info('Python ServiceBus queue trigger processed message: %s',
+                 day_yesterday)
