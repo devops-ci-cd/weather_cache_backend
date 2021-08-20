@@ -5,8 +5,8 @@
       "name": "msg",
       "type": "serviceBusTrigger",
       "direction": "in",
-      "queueName": "polyarush-queue-e158b81c-e08c-4b06-317c-11770e5e8b9c",
-      "connection": "Endpoint=sb://polyarush-sb-e158b81c-e08c-4b06-317c-11770e5e8b9c.servicebus.windows.net/;SharedAccessKeyName=polyarush-sb-rule;SharedAccessKey=BaR5UQPF74HKPiZ7o8U3YReTGmEwTk4MS+VeKz9Eq5U="
+      "queueName": "%SERVICE_BUS_QUEUE_NAME%",
+      "connection": "%SERVICE_BUS_CONNECTION_STR%"
     }
   ]
 }
