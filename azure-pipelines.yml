@@ -15,8 +15,8 @@ steps:
     then
         dotnet build extensions.csproj --output ./bin
     fi
-    pip install --target="./.python_packages/lib/python3.6/site-packages" -r ./azure_function_backend/requirements.txt
-  workingDirectory: '$(System.DefaultWorkingDirectory)'
+    pip install --target="./.python_packages/lib/python3.6/site-packages" -r ./requirements.txt
+  workingDirectory: '$(System.DefaultWorkingDirectory)/azure_function_backend'
   displayName: 'Install Application Dependencies'
 
 - task: ArchiveFiles@2
