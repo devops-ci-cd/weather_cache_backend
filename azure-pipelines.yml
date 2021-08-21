@@ -5,17 +5,18 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-
 - task: UsePythonVersion@0
-  displayName: 'Use Python 3.6'
-
+  displayName: "Setting python version to 3.6 as required by functions"
+  inputs:
+    versionSpec: '3.6'
+    architecture: 'x64'
 - bash: |
-     pip3 install --target .python_packages/lib/site-packages -r requirements.txt
-  #  python3 -m venv worker_env
-  #  source worker_env/bin/activate
-  #  pip3 install setuptools
-  #  pip3 install -r requirements.txt
-  workingDirectory: '$(System.DefaultWorkingDirectory)/azure_function_backend'
+    if [ -f extensions.csproj ]
+    then
+        dotnet build extensions.csproj --output ./bin
+    fi
+    pip install --target="./.python_packages/lib/python3.6/site-packages" -r ./azure_function_backend/requirements.txt
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
   displayName: 'Install Application Dependencies'
 
 - task: ArchiveFiles@2
