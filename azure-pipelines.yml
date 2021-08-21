@@ -20,7 +20,7 @@ steps:
    source worker_venv/bin/activate
    pip3 install setuptools
    pip3 install -r requirements.txt
-  workingDirectory: 'azure_function_backend'
+  workingDirectory: '$(build.artifactstagingdirectory)/azure_function_backend'
   displayName: 'Install Application Dependencies'
 
 - task: PublishBuildArtifacts@1
