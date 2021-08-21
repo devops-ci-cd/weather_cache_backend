@@ -10,7 +10,7 @@ steps:
   displayName: 'Use Python 3.x'
 
 - task: CopyFiles@2
-  displayName: 'Copy Azure Function files to artifacts'
+  displayName: 'Copy Azure Function files to artifacts staging dir'
   inputs:
     SourceFolder: azure_function_backend
     TargetFolder: '$(build.artifactstagingdirectory)/azure_function_backend'
