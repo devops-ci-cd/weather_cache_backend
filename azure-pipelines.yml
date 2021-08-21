@@ -9,13 +9,13 @@ steps:
 - task: UsePythonVersion@0
   displayName: 'Use Python 3.x'
 
-- task: CopyFiles@2
-  displayName: 'Copy Azure Function files to artifacts staging dir'
-  inputs:
-    SourceFolder: 'azure_function_backend'
-    Contents: '**'
-    TargetFolder: '$(System.DefaultWorkingDirectory)/azure_function_backend'
-    CleanTargetFolder: true
+# - task: CopyFiles@2
+#   displayName: 'Copy Azure Function files'
+#   inputs:
+#     SourceFolder: 'azure_function_backend'
+#     Contents: '**'
+#     TargetFolder: '$(System.DefaultWorkingDirectory)/azure_function_backend'
+#     CleanTargetFolder: true
 
 - bash: |
    python3 -m venv worker_venv
