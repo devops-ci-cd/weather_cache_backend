@@ -11,9 +11,8 @@ steps:
     versionSpec: '3.6'
     architecture: 'x64'
 - bash: |
-    python3 -m venv .venv
-    source ./.venv/bin/activate
-    pip install -r ./requirements.txt
+    pip install --upgrade pip
+    pip install --target="./.python_packages/lib/python3.6/site-packages" -r ./requirements.txt
   workingDirectory: '$(System.DefaultWorkingDirectory)/azure_function_backend'
   displayName: 'Install Application Dependencies'
 
