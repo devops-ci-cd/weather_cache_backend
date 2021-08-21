@@ -14,7 +14,7 @@ steps:
   inputs:
     SourceFolder: 'azure_function_backend'
     Contents: '**'
-    TargetFolder: '$(build.artifactstagingdirectory)/azure_function_backend'
+    TargetFolder: '$(System.DefaultWorkingDirectory)/azure_function_backend'
     CleanTargetFolder: true
 
 - bash: |
@@ -22,14 +22,17 @@ steps:
    source worker_venv/bin/activate
    pip3 install setuptools
    pip3 install -r requirements.txt
-  workingDirectory: '$(build.artifactstagingdirectory)/azure_function_backend'
+  workingDirectory: '$(System.DefaultWorkingDirectory)/azure_function_backend'
   displayName: 'Install Application Dependencies'
 
 - task: ArchiveFiles@2
   displayName: 'Archive files'
   inputs:
-    rootFolderOrFile: '$(build.artifactstagingdirectory)/azure_function_backend'
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/azure_function_backend'
     includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)/'
