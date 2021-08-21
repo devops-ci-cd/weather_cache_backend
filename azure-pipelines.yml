@@ -10,8 +10,11 @@ steps:
   displayName: 'Use Python 3.6'
 
 - bash: |
-   pip3 install setuptools
-   pip3 install -r requirements.txt
+     pip3.6 install --target .python_packages/lib/site-packages -r requirements.txt
+  #  python3 -m venv worker_env
+  #  source worker_env/bin/activate
+  #  pip3 install setuptools
+  #  pip3 install -r requirements.txt
   workingDirectory: '$(System.DefaultWorkingDirectory)/azure_function_backend'
   displayName: 'Install Application Dependencies'
 
