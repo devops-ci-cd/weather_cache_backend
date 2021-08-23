@@ -1,4 +1,5 @@
 import logging
+import sys
 
 import azure.functions as func
 
@@ -34,7 +35,13 @@ def main(msg: func.ServiceBusMessage):
     # city = 'St Petersburg'
     # fetch "today" for the woeid timezone
     # relativedelta to deal with leap years
-    req_day = datetime.datetime.strptime(msg.get_body().decode('utf-8'), '%d%m%Y').date()
+    
+    try:
+      req_day = datetime.datetime.strptime(msg.get_body().decode('utf-8'), '%d%m%Y').date()
+    except (ValueError, TypeError):
+      logging.error("Errorneous request. Perform highload scale test.")
+      sys.exit()
+
     day_yesterday = (req_day - relativedelta(days=1)).strftime("%Y/%m/%d")
     day_yesterday_year_ago = (req_day - relativedelta(days=1) - relativedelta(years=1)).strftime("%Y/%m/%d")
 
@@ -52,19 +59,19 @@ def main(msg: func.ServiceBusMessage):
 
     cursor = conn.cursor()
     try:
-        cursor.executemany(
-            "INSERT WeatherCache (Date, MaxTemp, MinTemp, Humidity) VALUES (%s, %d, %d, %d);",
-            [
-                build_values_line(resp_yesterday),
-                build_values_line(resp_yesterday_year_ago)
-            ]
-        )
+        cursor.execute(
+            "INSERT WeatherCache (Date, MaxTemp, MinTemp, Humidity) VALUES (%s, %d, %d, %d);", build_values_line(resp_yesterday))
         conn.commit()
+    except pymssql.StandardError as e:
+        logging.error(e.args)
 
+    try:
+        cursor.execute(
+            "INSERT WeatherCache (Date, MaxTemp, MinTemp, Humidity) VALUES (%s, %d, %d, %d);", build_values_line(resp_yesterday_year_ago))
+        conn.commit()
     except pymssql.StandardError as e:
         logging.error(e.args)
     conn.close()
-
 
     logging.info('Python ServiceBus queue trigger processed message: %s',
                  day_yesterday)
