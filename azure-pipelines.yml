@@ -19,7 +19,7 @@ steps:
     architecture: 'x64'
 - bash: |
     pip install --upgrade pip
-    pip install --target="./..python_packages/lib/site-packages" -r ./requirements.txt
+    pip install --target="./.python_packages/lib/site-packages" -r ./requirements.txt
   workingDirectory: '$(System.DefaultWorkingDirectory)/azure_function_backend'
   displayName: 'Install Application Dependencies'
 
