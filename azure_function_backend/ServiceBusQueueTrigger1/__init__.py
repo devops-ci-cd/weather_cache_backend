@@ -40,7 +40,7 @@ def main(msg: func.ServiceBusMessage):
       req_day = datetime.datetime.strptime(msg.get_body().decode('utf-8'), '%d%m%Y').date()
     except (ValueError, TypeError):
       logging.error("Errorneous request. Perform highload scale test.")
-      sys.exit()
+      sys.exit(0)
 
     day_yesterday = (req_day - relativedelta(days=1)).strftime("%Y/%m/%d")
     day_yesterday_year_ago = (req_day - relativedelta(days=1) - relativedelta(years=1)).strftime("%Y/%m/%d")
