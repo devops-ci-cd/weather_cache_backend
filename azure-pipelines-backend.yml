@@ -35,7 +35,7 @@ steps:
 - task: ArchiveFiles@2
   displayName: 'Archive sql files'
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/*.sql'
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dbschema.sql'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
