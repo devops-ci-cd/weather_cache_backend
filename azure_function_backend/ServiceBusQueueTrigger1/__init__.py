@@ -29,7 +29,6 @@ def build_values_line(response):
 
 
 def main(msg: func.ServiceBusMessage):
-    # server='devops-db-server.database.windows.net', user='devops', password='ljksadfhjuyerGFd65', database='weatherdb'
     # St. Petersburg woeid by default
     woeid = 2123260
     # city = 'St Petersburg'
@@ -41,7 +40,8 @@ def main(msg: func.ServiceBusMessage):
     except (ValueError, TypeError):
       logging.info('Python ServiceBus queue trigger processed message: %s', msg.get_body().decode('utf-8'))
       logging.error("Errorneous request.")
-      sys.exit(0)
+      # terminate the script in case of bad message
+      sys.exit(1)
 
     day_yesterday = (req_day - relativedelta(days=1)).strftime("%Y/%m/%d")
     day_yesterday_year_ago = (req_day - relativedelta(days=1) - relativedelta(years=1)).strftime("%Y/%m/%d")
