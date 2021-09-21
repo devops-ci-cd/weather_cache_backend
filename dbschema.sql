@@ -1,18 +1,14 @@
 /****** Object:  Table [dbo].[WeatherCache]    Script Date: 10.08.2021 16:44:22 ******/
-/****** 
-Use this example to update the sql schema
-IF NOT EXISTS(
-    SELECT * 
-    FROM [information_schema].[referential_constraints] 
-    WHERE constraint_name = 'FK_Constraint_Name' 
-      AND constraint_schema = 'dbo'
-) ******/
 
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
+IF NOT EXISTS (SELECT * 
+FROM sysobjects 
+WHERE name='WeatherCache')
 
 CREATE TABLE [dbo].[WeatherCache](
 	[ID] [uniqueidentifier] NOT NULL,
@@ -34,6 +30,8 @@ CREATE TABLE [dbo].[WeatherCache](
 ) ON [PRIMARY]
 GO
 
+GO
+
 ALTER TABLE [dbo].[WeatherCache] ADD  CONSTRAINT [DF_WeatherCache_ID]  DEFAULT (newid()) FOR [ID]
 GO
 
@@ -48,4 +46,3 @@ GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'St Petersburg woeid by default' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WeatherCache', @level2type=N'COLUMN',@level2name=N'WoeID'
 GO
-
