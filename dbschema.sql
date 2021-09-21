@@ -10,39 +10,59 @@ IF NOT EXISTS (SELECT *
 FROM sysobjects 
 WHERE name='WeatherCache')
 
-CREATE TABLE [dbo].[WeatherCache](
-	[ID] [uniqueidentifier] NOT NULL,
-	[CityTitle] [varchar](255) NULL,
-	[WoeID] [int] NOT NULL,
-	[Date] [date] NOT NULL,
-	[MaxTemp] [smallint] NOT NULL,
-	[MinTemp] [smallint] NOT NULL,
-	[Humidity] [tinyint] NOT NULL,
- CONSTRAINT [PK_WeatherCache] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
- CONSTRAINT [UC_Date] UNIQUE NONCLUSTERED 
-(
-	[WoeID] ASC,
-	[Date] ASC
-)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+	CREATE TABLE [dbo].[WeatherCache](
+		[ID] [uniqueidentifier] NOT NULL,
+		[CityTitle] [varchar](255) NULL,
+		[WoeID] [int] NOT NULL,
+		[Date] [date] NOT NULL,
+		[MaxTemp] [smallint] NOT NULL,
+		[MinTemp] [smallint] NOT NULL,
+		[Humidity] [tinyint] NOT NULL,
+	CONSTRAINT [PK_WeatherCache] PRIMARY KEY CLUSTERED 
+	(
+		[ID] ASC
+	)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+	CONSTRAINT [UC_Date] UNIQUE NONCLUSTERED 
+	(
+		[WoeID] ASC,
+		[Date] ASC
+	)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+	) ON [PRIMARY]
+	GO
 
 GO
 
-ALTER TABLE [dbo].[WeatherCache] ADD  CONSTRAINT [DF_WeatherCache_ID]  DEFAULT (newid()) FOR [ID]
+IF NOT EXISTS (SELECT * 
+FROM sysobjects 
+WHERE name='DF_WeatherCache_ID')
+	ALTER TABLE [dbo].[WeatherCache] ADD  CONSTRAINT [DF_WeatherCache_ID]  DEFAULT (newid()) FOR [ID]
+	GO
 GO
 
-ALTER TABLE [dbo].[WeatherCache] ADD  CONSTRAINT [DF_WeatherCache_CityTitle]  DEFAULT ('St Petersburg') FOR [CityTitle]
+IF NOT EXISTS (SELECT * 
+FROM sysobjects 
+WHERE name='DF_WeatherCache_CityTitle')
+	ALTER TABLE [dbo].[WeatherCache] ADD  CONSTRAINT [DF_WeatherCache_CityTitle]  DEFAULT ('St Petersburg') FOR [CityTitle]
+	GO
 GO
 
-ALTER TABLE [dbo].[WeatherCache] ADD  CONSTRAINT [DF_WeatherCache_WoeID]  DEFAULT ((2123260)) FOR [WoeID]
+IF NOT EXISTS (SELECT * 
+FROM sysobjects 
+WHERE name='DF_WeatherCache_WoeID')
+	ALTER TABLE [dbo].[WeatherCache] ADD  CONSTRAINT [DF_WeatherCache_WoeID]  DEFAULT ((2123260)) FOR [WoeID]
+	GO
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'St Petersburg by default' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WeatherCache', @level2type=N'COLUMN',@level2name=N'CityTitle'
+IF NOT EXISTS (SELECT * 
+from sys.extended_properties 
+where NAME = 'MS_Description' AND VALUE = 'St Petersburg by default')
+	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'St Petersburg by default' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WeatherCache', @level2type=N'COLUMN',@level2name=N'CityTitle'
+	GO
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'St Petersburg woeid by default' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WeatherCache', @level2type=N'COLUMN',@level2name=N'WoeID'
+IF NOT EXISTS (SELECT * 
+from sys.extended_properties 
+where NAME = 'MS_Description' AND VALUE = 'St Petersburg woeid by default')
+	EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'St Petersburg woeid by default' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'WeatherCache', @level2type=N'COLUMN',@level2name=N'WoeID'
+	GO
 GO
